@@ -7,7 +7,7 @@ import ddf.minim.Minim;
 import ddf.minim.analysis.FFT;
 import processing.core.PApplet;
 
-public class Audio2 extends PApplet
+public class Reacts extends PApplet
 {
     Minim minim;
     AudioPlayer ap;
