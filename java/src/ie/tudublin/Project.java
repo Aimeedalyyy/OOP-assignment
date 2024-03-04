@@ -44,7 +44,7 @@ public class Project extends PApplet
 
         //audio files
         ap = minim.loadFile("tomp3.cc - 08 PsychNerD and Marco G  More Cowbell.mp3", 1024);
-        ap1 = minim.loadFile("scale.wav" , 1024);
+        ap1 = minim.loadFile("scale.wav" , 1024); //1024 is the size of the buffer we are using 
 
         //play all files at the same time
         ap1.play();
