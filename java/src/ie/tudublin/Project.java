@@ -43,16 +43,16 @@ public class Project extends PApplet
         minim = new Minim(this);
 
         //audio files
-        ap = minim.loadFile("tomp3.cc - 08 PsychNerD and Marco G  More Cowbell.mp3", 1024);
-        ap1 = minim.loadFile("scale.wav" , 1024); //1024 is the size of the buffer we are using 
+        //ap = minim.loadFile("tomp3.cc - 08 PsychNerD and Marco G  More Cowbell.mp3", 1024);
+        ap1 = minim.loadFile("Mel.mp3" , 1024); //1024 is the size of the buffer we are using 
 
         //play all files at the same time
         ap1.play();
-        ap.play();
+        //ap.play();
 
         //audio buffers
         ab1 = ap1.mix;
-        ab = ap.mix;
+        //ab = ap.mix;
 
         colorMode(HSB);
 
@@ -87,7 +87,7 @@ public class Project extends PApplet
             //float hue = map(i, 0, ab.size() , 0, 256); //makes the line a rainbow across it
             stroke(255, 255, 255);
             noFill();
-            circle(200 , 400 , ab.get(i) * cy);
+            //circle(200 , 400 , ab.get(i) * cy);
             stroke(200, 255, 255);
             circle(300 , 400 , ab1.get(i) * cy);
         }
