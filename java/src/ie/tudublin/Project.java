@@ -23,14 +23,10 @@ public class Project extends PApplet
 		if (key >= '0' && key <= '9') {
 			mode = key - '0';
 		}
-		/*if (keyCode == ' ') {
-            if (ap.isPlaying()) {
-                ap.pause();
-            } else {
-                ap.rewind();
-                ap.play();
-            }
-        }*/
+		if(key == '1')
+        
+
+        
 	}
 
     public void settings()
