@@ -9,8 +9,8 @@ import processing.core.PApplet;
 public class Project extends PApplet
 {
     Minim minim;
-    AudioPlayer ap , ap1;
-    AudioBuffer ab , ab1;
+    AudioPlayer banjo , boathorn , drums , guitar , whistle;
+    AudioBuffer SharedBuffer;
 
     int mode = 0;
 
@@ -23,14 +23,14 @@ public class Project extends PApplet
 		if (key >= '0' && key <= '9') {
 			mode = key - '0';
 		}
-		if (keyCode == ' ') {
+		/*if (keyCode == ' ') {
             if (ap.isPlaying()) {
                 ap.pause();
             } else {
                 ap.rewind();
                 ap.play();
             }
-        }
+        }*/
 	}
 
     public void settings()
@@ -43,16 +43,23 @@ public class Project extends PApplet
         minim = new Minim(this);
 
         //audio files
-        //ap = minim.loadFile("tomp3.cc - 08 PsychNerD and Marco G  More Cowbell.mp3", 1024);
-        ap1 = minim.loadFile("Mel.mp3" , 1024); //1024 is the size of the buffer we are using 
-
+        banjo = minim.loadFile("/Users/aimeedaly/Desktop/OOP-assignment/java/data/Banjo.wav" , 1024); //1024 is the size of the buffer we are using 
+        boathorn = minim.loadFile("/Users/aimeedaly/Desktop/OOP-assignment/java/data/boathorn.mp3", 1024);
+        drums = minim.loadFile("/Users/aimeedaly/Desktop/OOP-assignment/java/data/drums.mp3", 1024);
+        guitar = minim.loadFile("/Users/aimeedaly/Desktop/OOP-assignment/java/data/Guitar.mp3", 1024);
+        whistle = minim.loadFile("/Users/aimeedaly/Desktop/OOP-assignment/java/data/whistle.mp3" , 1024);
+        
         //play all files at the same time
-        ap1.play();
-        //ap.play();
+        
+        drums.play();
+        boathorn.play();
+        banjo.play();
+        guitar.play();
+        whistle.play();
+    
 
-        //audio buffers
-        ab1 = ap1.mix;
-        //ab = ap.mix;
+        //shared audio buffers
+        SharedBuffer = banjo.mix;
 
         colorMode(HSB);
 
@@ -81,16 +88,6 @@ public class Project extends PApplet
         float cx = width / 2; // middle of canvas
         float cy = height / 2;///middle of canvas
  
-
-        for(int i = 0 ; i < ab1.size() ; i ++)
-        {
-            //float hue = map(i, 0, ab.size() , 0, 256); //makes the line a rainbow across it
-            stroke(255, 255, 255);
-            noFill();
-            //circle(200 , 400 , ab.get(i) * cy);
-            stroke(200, 255, 255);
-            circle(300 , 400 , ab1.get(i) * cy);
-        }
             
 
     }        
