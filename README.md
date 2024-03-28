@@ -5,6 +5,14 @@ to add another audio file:
 -add another audioplayer and audiobuffer variable (ap + ab) in lines 13 and 15 of the public class.
 -In setup assign the ap variable to the new file being added.
 
-4/3/23
-Testing drawing with > 1 audio file at a time
+Rubric
+-The assignment is technically complex with lots of elements responding to or synchronised to sound.
+-Lots of interactivity
+-You have done lots of self directed learning and included advanced coding techniques that you have taught yourself.
+-The visual is synchronised to the music perfectly.
+-You will have used PVectors, transforms and classes to create autonomous elements in the assignment. 
+-Your code is organised into classes that use inheritance and polymorphism.
+-The assignment is well documented
+-You made or programmed all the art assets to a high standard.
+-You worked on the assignment making steady progress and have documented this.
 
