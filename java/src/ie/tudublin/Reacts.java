@@ -7,7 +7,7 @@ import ddf.minim.Minim;
 import ddf.minim.analysis.FFT;
 import processing.core.PApplet;
 
-public class Reacts extends PApplet
+public class Reacts extends Project
 {
     Minim minim;
     AudioPlayer ap;
@@ -23,71 +23,57 @@ public class Reacts extends PApplet
 
     FFT fft;
 
-    public void keyPressed() {
-		if (key >= '0' && key <= '9') {
-			mode = key - '0';
-		}
-		if (keyCode == ' ') {
-            if (ap.isPlaying()) {
-                ap.pause();
-            } else {
-                ap.rewind();
-                ap.play();
-            }
-        }
-	}
-
+    @Override
     public void settings()
     {
-        size(1024, 1000, P3D);
-        //fullScreen(P3D, SPAN);
+        super.settings();
     }
 
-    public void setup()
-    {
-        minim = new Minim(this);
-        // Uncomment this to use the microphone
-         ai = minim.getLineIn(Minim.MONO, width, 44100, 16);
-         ab = ai.mix; 
-        //ap = minim.loadFile("heroplanet.mp3", 1024);
-        //ap.play();
-        ab = ai.mix;
-        colorMode(HSB);
-
-        y = height / 2;
-        smoothedY = y;
-
-        fft = new FFT(width, 44100);
-
-        lerpedBuffer = new float[width];
+    public void Setbuff(AudioBuffer buffer) {
+        this.ab = buffer;
     }
-
-    float off = 0;
 
     public void draw()
     {
-        //background(0);
+        if (ab == null)
+        {
+            System.out.println("buffer error");
+        }
         float halfH = height / 2;
         float average = 0;
-        float sum = 0;
-        off += 1;
+        //float sum = 0;
+       
+        
+
+        smoothedAmplitude = lerp(smoothedAmplitude, average, 0.1f);
+        
+        //float cx = width / 2;
+        //float cy = height / 2;
+
+            background(0);
+            strokeWeight(2);
+            for(int i = 0 ; i < ab.size() ; i +=10)
+            {
+                //float c = map(ab.get(i), -1, 1, 0, 255);
+                float cc = map(i, 0, ab.size(), 0, 255);
+                stroke(cc, 255, 255);
+                float f = lerpedBuffer[i] * halfH * 4.0f;
+                line(i, halfH + f, i, halfH - f);
+                fill(cc);
+                circle(i, halfH + f, 5);                    
+                circle(i, halfH - f, 5);                    
+            }
+
         // Calculate sum and average of the samples
         // Also lerp each element of buffer;
-        for(int i = 0 ; i < ab.size() ; i ++)
+        /*for(int i = 0 ; i < ab.size() ; i ++)
         {
             sum += abs(ab.get(i));
             lerpedBuffer[i] = lerp(lerpedBuffer[i], ab.get(i), 0.05f);
         }
-        average= sum / (float) ab.size();
+        average= sum / (float) ab.size();*/
 
-        smoothedAmplitude = lerp(smoothedAmplitude, average, 0.1f);
-        
-        float cx = width / 2;
-        float cy = height / 2;
-
-        
-
-        switch (mode) {
+        /*switch (mode) {
 			case 0:
                 background(0);
                 for(int i = 0 ; i < ab.size() ; i ++)
@@ -167,9 +153,8 @@ public class Reacts extends PApplet
                 fill(cc);
                 circle(i, halfH + f, 5);                    
                 circle(i, halfH - f, 5);                    
-            }
-            break;
-        case 5:
+            }*/
+         
         }
         
 
@@ -189,4 +174,4 @@ public class Reacts extends PApplet
         */
 
     }        
-}
+

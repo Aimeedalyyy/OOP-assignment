@@ -12,28 +12,14 @@ public class Project extends PApplet
     AudioPlayer banjo , boathorn , drums , guitar , whistle;
     AudioBuffer SharedBuffer;
 
-    int mode = 0;
-
-    float[] lerpedBuffer;
-    float y = 0;
-    float smoothedY = 0;
-    float smoothedAmplitude = 0;
-
-    public void keyPressed() {
-		if (key >= '0' && key <= '9') {
-			mode = key - '0';
-		}
-		if(key == '1')
-        
-
-        
-	}
-
-    public void settings()
-    {
-        size(800, 800);//size of window
+    @Override
+    public void settings() {
+        // Set the size of the window
+        size(800, 600);
+        background(0);
     }
 
+    @Override
     public void setup()
     {
         minim = new Minim(this);
@@ -42,7 +28,7 @@ public class Project extends PApplet
         banjo = minim.loadFile("/Users/aimeedaly/Desktop/OOP-assignment/java/data/Banjo.wav" , 1024); //1024 is the size of the buffer we are using 
         boathorn = minim.loadFile("/Users/aimeedaly/Desktop/OOP-assignment/java/data/boathorn.mp3", 1024);
         drums = minim.loadFile("/Users/aimeedaly/Desktop/OOP-assignment/java/data/drums.mp3", 1024);
-        guitar = minim.loadFile("/Users/aimeedaly/Desktop/OOP-assignment/java/data/Guitar.mp3", 1024);
+        guitar = minim.loadFile("/Users/aimeedaly/Desktop/OOP-assignment/java/data/Guitar.wav", 1024);
         whistle = minim.loadFile("/Users/aimeedaly/Desktop/OOP-assignment/java/data/whistle.mp3" , 1024);
         
         //play all files at the same time
@@ -52,39 +38,25 @@ public class Project extends PApplet
         banjo.play();
         guitar.play();
         whistle.play();
-    
 
         //shared audio buffers
-        SharedBuffer = banjo.mix;
+        SharedBuffer = banjo.mix; 
 
-        colorMode(HSB);
-
-        y = height / 2;
-        smoothedY = y;
-
-        lerpedBuffer = new float[width];
+        
     }
-    float off = 0;
 
-    @Override
-    public void draw()
+
+    public void keyPressed()
     {
-        colorMode(HSB);
-        background(0);
-        stroke(255);
-        float average = 0;
-        float sum = 0;
-        off += 1;
-        // Calculate sum and average of the samples
-        // Also lerp each element of buffer;
+        if(key == '1')
+        {
+           Reacts draw1 = new Reacts();
+            draw1.Setbuff(SharedBuffer);
+            draw1.draw(); 
+        }
         
+    }
+    
 
-        smoothedAmplitude = lerp(smoothedAmplitude, average, 0.1f);
-        
-        float cx = width / 2; // middle of canvas
-        float cy = height / 2;///middle of canvas
- 
-            
-
-    }        
+    
 }
