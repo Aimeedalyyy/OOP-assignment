@@ -71,7 +71,7 @@ public class Reacts extends Project
             sum += abs(ab.get(i));
             lerpedBuffer[i] = lerp(lerpedBuffer[i], ab.get(i), 0.05f);
         }
-        average= sum / (float) ab.size();*/
+        average= sum / (float) ab.size();
 
         /*switch (mode) {
 			case 0:

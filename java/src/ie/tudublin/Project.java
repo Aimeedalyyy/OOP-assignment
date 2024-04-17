@@ -5,6 +5,7 @@ import ddf.minim.AudioBuffer;
 import ddf.minim.AudioPlayer;
 import ddf.minim.Minim;
 import processing.core.PApplet;
+import ddf.minim.analysis.FFT;
 
 public class Project extends PApplet
 {
@@ -12,14 +13,28 @@ public class Project extends PApplet
     AudioPlayer banjo , boathorn , drums , guitar , whistle;
     AudioBuffer SharedBuffer;
 
-    @Override
-    public void settings() {
-        // Set the size of the window
-        size(800, 600);
-        background(0);
+    int mode = 0;
+    int OFF_MAX = 300;
+    FFT fft;
+
+    float[] lerpedBuffer;
+    float y = 0;
+    float smoothedY = 0;
+    float smoothedAmplitude = 0;
+
+    public void keyPressed() {
+		if (key >= '0' && key <= '9') {
+			mode = key - '0';
+		}
+        println(mode);
+		
+	}
+
+    public void settings()
+    {
+        size(800, 800);//size of window
     }
 
-    @Override
     public void setup()
     {
         minim = new Minim(this);
@@ -38,25 +53,55 @@ public class Project extends PApplet
         banjo.play();
         guitar.play();
         whistle.play();
+    
 
         //shared audio buffers
-        SharedBuffer = banjo.mix; 
+        SharedBuffer = banjo.mix;
 
-        
+        colorMode(HSB);
+
+        y = height / 2;
+        smoothedY = y;
+
+        lerpedBuffer = new float[width];
     }
+    float off = 0;
 
-
-    public void keyPressed()
-    {
-        if(key == '1')
-        {
-           Reacts draw1 = new Reacts();
-            draw1.Setbuff(SharedBuffer);
-            draw1.draw(); 
+    int colorFromOffset(int offset) {
+            return (int) ((offset + OFF_MAX) / (2.8 * OFF_MAX) * 255);
         }
+
+
+    public void draw()
+    {
+        colorMode(HSB);
+        background(0);
+        stroke(255);
+
+        switch (mode) {
+            case 1:
+                float cx = width/2;
+                float cy = height /2;
+
+                circle(cx, cy , 500);
+                for(int i = 0 ; i < SharedBuffer.size() ; i ++)
+                {
+                    //float c = map(ab.get(i), -1, 1, 0, 255);
+                    float c = map(i, 0, SharedBuffer.size(), 0, 255);
+                    stroke(c, 255, 255);
+                    float f = lerpedBuffer[i] * cy * 4.0f;
+                    line(i, cy + f, i, cy - f);                    
+                }
+         
+                break;
+        
+            default:
+                break;
+        }
+
+        
         
     }
-    
+            
 
-    
-}
+}        
