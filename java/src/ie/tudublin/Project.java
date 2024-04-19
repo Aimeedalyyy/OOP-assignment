@@ -12,11 +12,13 @@ public class Project extends PApplet
     Minim minim;
     AudioPlayer banjo , boathorn , drums , guitar , whistle;
     AudioBuffer SharedBuffer;
-
+    
     int mode = 0;
-    int OFF_MAX = 300;
-    FFT fft;
 
+    //Cube Variables
+    int OFF_MAX = 300;
+
+  
     float[] lerpedBuffer;
     float y = 0;
     float smoothedY = 0;
@@ -26,13 +28,12 @@ public class Project extends PApplet
 		if (key >= '0' && key <= '9') {
 			mode = key - '0';
 		}
-        println(mode);
 		
 	}
 
     public void settings()
     {
-        size(800, 800);//size of window
+        size(1080, 1060, P3D);
     }
 
     public void setup()
@@ -80,25 +81,42 @@ public class Project extends PApplet
 
         switch (mode) {
             case 1:
-                float cx = width/2;
-                float cy = height /2;
+                background(0);
 
-                circle(cx, cy , 500);
-                for(int i = 0 ; i < SharedBuffer.size() ; i ++)
-                {
-                    //float c = map(ab.get(i), -1, 1, 0, 255);
-                    float c = map(i, 0, SharedBuffer.size(), 0, 255);
-                    stroke(c, 255, 255);
-                    float f = lerpedBuffer[i] * cy * 4.0f;
-                    line(i, cy + f, i, cy - f);                    
+                float amplitude = SharedBuffer.level();
+                float rotationSpeed = map(amplitude, 0.0f, 1.0f, 0.01f, 0.1f);
+
+                translate(width / 2, height / 2, -OFF_MAX);
+                rotateX(frameCount * rotationSpeed);
+                rotateY(frameCount * 0.01f);
+                rotateZ(frameCount * 0.01f);
+
+                for (int xo = -OFF_MAX; xo <= OFF_MAX; xo += 50) {
+                    for (int yo = -OFF_MAX; yo <= OFF_MAX; yo += 50) {
+                        for (int zo = -OFF_MAX; zo <= OFF_MAX; zo += 50) {
+                        pushMatrix();
+                        translate(xo, yo, zo);
+                        rotateX(frameCount * rotationSpeed);
+                        rotateY(frameCount * 0.01f);
+                        rotateZ(frameCount * 0.01f);
+                        fill(colorFromOffset(xo), colorFromOffset(yo), colorFromOffset(zo));
+                        box(20);
+                        popMatrix();
+                    }
+                    }
                 }
+        
+
+            
          
+                break;
+            
+            case 2:
+
                 break;
         
             default:
-                break;
-        }
-
+    }
         
         
     }
