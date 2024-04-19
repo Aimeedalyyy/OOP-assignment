@@ -43,11 +43,11 @@ public class Project extends PApplet
         minim = new Minim(this);
 
         //audio files
-        banjo = minim.loadFile("/Users/aimeedaly/Desktop/OOP-assignment/java/data/Banjo.wav" , 1024); //1024 is the size of the buffer we are using 
-        boathorn = minim.loadFile("/Users/aimeedaly/Desktop/OOP-assignment/java/data/boathorn.mp3", 1024);
-        drums = minim.loadFile("/Users/aimeedaly/Desktop/OOP-assignment/java/data/drums.mp3", 1024);
-        guitar = minim.loadFile("/Users/aimeedaly/Desktop/OOP-assignment/java/data/Guitar.mp3", 1024);
-        whistle = minim.loadFile("/Users/aimeedaly/Desktop/OOP-assignment/java/data/whistle.mp3" , 1024);
+        banjo = minim.loadFile("Banjo.wav" , 1024); //1024 is the size of the buffer we are using 
+        boathorn = minim.loadFile("boathorn.mp3", 1024);
+        drums = minim.loadFile("drums.mp3", 1024);
+        guitar = minim.loadFile("Guitar.wav", 1024);
+        whistle = minim.loadFile("whistle.mp3" , 1024);
         
         //play all files at the same time
         
