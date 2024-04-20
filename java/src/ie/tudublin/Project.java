@@ -1,6 +1,7 @@
 package ie.tudublin;
 
 import ddf.minim.AudioBuffer;
+import ddf.minim.AudioInput;
 //In the context of audio processing, an "audiobuffer" typically refers to a data structure used to hold audio samples. Each element of the audiobuffer represents the amplitude (or intensity) of the audio signal at a specific point in time.
 import ddf.minim.AudioPlayer;
 import ddf.minim.Minim;
@@ -12,6 +13,7 @@ public class Project extends PApplet
     Minim minim;
     AudioPlayer banjo , boathorn , drums , guitar , whistle;
     AudioBuffer SharedBuffer, drumBuffer;
+    AudioInput mixedInput;
     
     int mode = 0;
 
@@ -25,6 +27,10 @@ public class Project extends PApplet
     float sphereSize = 10; // Size of individual spheres in the disco ball
     float radius = 100; // Radius of the larger sphere
     int numSpheres = 200; // Number of smaller spheres
+
+    //case 5 variables
+    float minSize = 50; // Minimum size for the cube and sphere
+    float maxSize = 400; // Maximum size for the cube and sphere
 
   
     float[] lerpedBuffer;
@@ -56,6 +62,8 @@ public class Project extends PApplet
         whistle = minim.loadFile("/Users/aimeedaly/Desktop/OOP-assignment/java/data/whistle.mp3" , 1024);
         
         //play all files at the same time
+
+        mixedInput = minim.getLineIn();
         
         drums.play();
         boathorn.play();
@@ -118,11 +126,11 @@ public class Project extends PApplet
             
             case 2://lines 
                 stroke(255);
-                
+                int drawtime = 0;
+
                 for(int i = 0 ; i < drumBuffer.size() ; i ++)
                 {
-
-                
+                if(millis() - drawtime >= 100){
                 float x = random(width);
                 float y = random(height);
                 float x2 = random(width);
@@ -132,21 +140,23 @@ public class Project extends PApplet
                 //adding colour to the lines
                 stroke(random(255), random(255), random(255));
                 line(x, y, x2, y2);
-    
+
                 //adding thickness to the lines
                 strokeWeight(random(8));
                 line(x, y, x2, y2);
     
-    
                 //adding transparency to the lines
                 stroke(random(255), random(255), random(255), random(255));
                 line(x, y, x2, y2);
-    
+
                 //adding lerping to the lines
                 float lerp = map(mouseX, 0, width, 0, 1);
                 float lerpedX = lerp(x, x2, lerp);
                 float lerpedY = lerp(y, y2, lerp);
                 line(x, y, lerpedX, lerpedY);
+
+                drawtime = millis();
+                }
             }
 
 
@@ -171,10 +181,12 @@ public class Project extends PApplet
             case 4://mandala 
             translate(width / 2, height / 2); 
         
-            for (int i = 0; i < 12; i++) {
+            for (int i = 0; i < SharedBuffer.size(); i++) {
+                noFill();
                 float fx = cos(angle) * 200;
                 float fy = sin(angle) * 200;
-    
+
+                strokeWeight(10);
                 stroke(random(255), random(255), random(255));
     
                 ellipse(fx, fy, 400, 400); 
@@ -185,19 +197,19 @@ public class Project extends PApplet
         
             break;
             case 5://sphere in cube 
-                drawCubeSphere(0.5f); // You can pass a default value here
+                float SPamplitude = mixedInput.mix.level();
+
+                // Normalize the amplitude to fit within the range of 0 to 1
+                float normalizedAmplitude = map(SPamplitude, 0, 1, 0, 1);
+        
+                // Draw the cube and sphere based on the normalized amplitude
+                drawCubeSphere(normalizedAmplitude);
 
             break;
         }
-            
-
-        
-        
     }
         
         
-    
-
     void drawDiscoBall() {
         // Loop through the number of smaller spheres
         for (int i = 0; i < numSpheres; i++) {
