@@ -22,7 +22,6 @@ public class Project extends PApplet
 
     //case 3 variables
     float angle = 0;
-    float rotationSpeed = 0.01f; // Reduced rotation speed for the larger sphere
     float sphereSpeed = 0.005f; // Reduced movement speed for the smaller spheres
     float sphereSize = 10; // Size of individual spheres in the disco ball
     float radius = 100; // Radius of the larger sphere
@@ -47,7 +46,7 @@ public class Project extends PApplet
 
     public void settings()
     {
-        size(1080, 1060, P3D);
+        size(1000, 1000, P3D);
     }
 
     public void setup()
@@ -84,7 +83,7 @@ public class Project extends PApplet
         lerpedBuffer = new float[width];
     }
     float off = 0;
-
+    
     int colorFromOffset(int offset) {
             return (int) ((offset + OFF_MAX) / (2.8 * OFF_MAX) * 255);
         }
@@ -158,21 +157,45 @@ public class Project extends PApplet
 
 
             break;
-            case 3://spheres going around
+            case 3://DiscoBall
 
-            noStroke(); // No stroke for the spheres
+                amplitude = SharedBuffer.level();
+                rotationSpeed = map(amplitude, 0.0f, 1.0f, 0.01f, 0.1f);
+        
+                int OFF_MAX = 3000;
+                int numSpheres = 200; // Number of smaller spheres
+                background(0);
+                translate(width / 2, height / 2, -OFF_MAX);
+                rotateX(frameCount * rotationSpeed);
+                rotateY(frameCount * 0.01f);
+                rotateZ(frameCount * 0.01f);
+
+                //float spacing = OFF_MAX * 0.7f; // Adjust the spacing between smaller spheres
+                float radius = OFF_MAX * 0.3f; // Adjust the radius of the larger sphere
+
+                // Draw the larger sphere
+                stroke(255);
+                noFill();
+                strokeWeight(1);
+                sphere(radius);
+
+                // Draw the smaller spheres inside the larger sphere
+                for (int i = 0; i < numSpheres; i++) 
+                {
+                
+                fill(255, 0, 0);
+                float theta = random(TWO_PI);
+                float phi = acos(2 * random(1) - 1);
+                float thisx = radius * sin(phi) * cos(theta);
+                float thisy = radius * sin(phi) * sin(theta);
+                float z = radius * cos(phi);
+                
+                pushMatrix();
+                translate(thisx, thisy, z);
+                sphere(10); // Adjust the size of smaller spheres
+                popMatrix();
+                }
             
-            background(0); // Clear the background
-
-            // Translate to the center of the canvas
-            translate(width / 2, height / 2);
-
-            // Rotate the scene around its center (larger sphere)
-            rotateY(angle);
-
-            // Draw the spinning disco ball
-            drawDiscoBall();
-
 
             break;
             case 4://mandala 
@@ -203,94 +226,65 @@ public class Project extends PApplet
                 lights(); 
                 float sphereSize = normalizedAmplitude * 200; 
                 float cubeSize = sphereSize * 2; 
+                float xpos = 100;
+                float ypos = 100;
+                //int cube = 10;
+
+                for(int c = 0 ; c < 4 ; c++)
+                {
+                    // Draw the  cube
+                    stroke(255); 
+                    noFill();
+                    translate(xpos, ypos, cubeSize ); 
+                    box(cubeSize); // Draw a cube
         
-         
-                // Draw the cube
-                stroke(255); 
-                noFill();
-                translate(width / 2, height / 2, -cubeSize / 2); 
-                box(cubeSize); // Draw a cube
-        
-                // Draw the sphere inside the cube
-                noStroke();
-                fill(normalizedAmplitude * 255, 255, 255); 
-                translate(0, 0, cubeSize / 2 - sphereSize / 2); 
-                sphere(sphereSize);
+                    // Draw the sphere inside the cube
+                    noStroke();
+                    fill(normalizedAmplitude * 255, 255, 255); 
+                    translate(0, 0, cubeSize / 2 - sphereSize / 2); 
+                    sphere(sphereSize);
+                    
+                    xpos = xpos + 100; 
+                }
+                
 
             break;
-            case 6:
+            case 6://flower
                 float SphereSize = 200; // Increased size of the spheres
                 background(0);
                 translate(width / 2, height / 2, -1000);
                 rotateX(frameCount * 0.01f);
                 rotateY(frameCount * 0.01f);
-    
-                float distance = 400;
-                for (int i = 0; i < 8; i++)// for each sphere ; 8
-                {
-                    noStroke();
 
-                    drawSphere(cos(radians(i * 45)) * distance, sin(radians(i * 45)) * distance, 0,SphereSize);
+                float distance = 400;
+                for (int i = 0; i < 8; i++) {
+                    noStroke();
+                    fill(random(255), random(255), random(255));
+                    drawSphere(cos(radians(i * 45)) * distance, sin(radians(i * 45)) * distance, 0, SphereSize);
                 }
-    
+
                 noStroke();
                 fill(random(255), random(255), random(255));
                 drawSphere(0, 0, 0, SphereSize);
-    
+
                 float s = map(sin(frameCount * 0.01f), -1, 1, SphereSize, SphereSize + 50);
                 drawSphere(0, 0, 0, s);
-    
+
                 noFill();
                 stroke(0);
                 strokeWeight(4);
                 drawSphere(0, 0, 0, SphereSize);
                 break;
         }
+        
+            
+            
+            
     }
         
         
-    void drawDiscoBall() {
-        // Loop through the number of smaller spheres
-        for (int i = 0; i < numSpheres; i++) {
-            // Calculate the position of the smaller sphere on the surface of the larger sphere
-            float theta = map(i, 0, numSpheres, 0, TWO_PI); // Evenly distribute spheres along the equator
-            float phi = map(i % (numSpheres / 2), 0, numSpheres / 2, -HALF_PI, HALF_PI); // Distribute spheres from top to bottom
-            float x = radius * sin(phi) * cos(theta);
-            float y = radius * sin(phi) * sin(theta);
-            float z = radius * cos(phi);
+   
 
-            // Apply some variation in color
-            int color = color(random(255), random(255), random(255));
-
-            // Set fill color for the smaller sphere
-            fill(color);
-
-            // Draw the smaller sphere at the calculated position
-            pushMatrix();
-            translate(x, y, z);
-            sphere(sphereSize);
-            popMatrix();
-        }
-    }
-          
-    public void drawCubeSphere(float smoothedAmplitude) {
-        background(0);
-        lights(); 
-        float sphereSize = smoothedAmplitude * 200; 
-        float cubeSize = sphereSize * 2; 
-        
-        // Draw the cube
-        stroke(255); 
-        noFill();
-        translate(width / 2, height / 2, -cubeSize / 2); 
-        box(cubeSize); // Draw a cube
-        
-        // Draw the sphere inside the cube
-        noStroke();
-        fill(smoothedAmplitude * 255, 255, 255); 
-        translate(0, 0, cubeSize / 2 - sphereSize / 2); 
-        sphere(sphereSize); 
-    }
 
     private void drawSphere(float x, float y, float z, float r) {
         pushMatrix();
