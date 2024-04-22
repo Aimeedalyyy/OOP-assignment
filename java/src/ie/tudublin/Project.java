@@ -146,8 +146,8 @@ public class Project extends PApplet
                 line(x, y, x2, y2);
     
                 //adding transparency to the lines
-                stroke(random(255), random(255), random(255), random(255));
-                line(x, y, x2, y2);
+                //stroke(random(255), random(255), random(255), random(255));
+                //line(x, y, x2, y2);
 
                 //adding lerping to the lines
                 float lerp = map(mouseX, 0, width, 0, 1);
@@ -197,7 +197,7 @@ public class Project extends PApplet
         
             break;
             case 5://sphere in cube 
-                float SPamplitude = mixedInput.mix.level();
+                float SPamplitude = SharedBuffer.level();
 
                 // Normalize the amplitude to fit within the range of 0 to 1
                 float normalizedAmplitude = map(SPamplitude, 0, 1, 0, 1);
