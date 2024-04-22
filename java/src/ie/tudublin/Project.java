@@ -228,28 +228,19 @@ public class Project extends PApplet
                 lights(); 
                 float sphereSize = normalizedAmplitude * 200; 
                 float cubeSize = sphereSize * 2; 
-                float xpos = 100;
-                float ypos = 100;
-                //int cube = 10;
-
-                for(int c = 0 ; c < 4 ; c++)
-                {
-                    // Draw the  cube
-                    stroke(255); 
-                    noFill();
-                    translate(xpos, ypos, cubeSize ); 
-                    box(cubeSize); // Draw a cube
-        
-                    // Draw the sphere inside the cube
-                    noStroke();
-                    fill(normalizedAmplitude * 255, 255, 255); 
-                    translate(0, 0, cubeSize / 2 - sphereSize / 2); 
-                    sphere(sphereSize);
-                    
-                    xpos = xpos + 100; 
-                }
                 
-
+                // Draw the cube
+                stroke(255); 
+                noFill();
+                translate(width / 2, height / 2, -cubeSize / 2); 
+                box(cubeSize); // Draw a cube
+        
+                // Draw the sphere inside the cube
+                noStroke();
+                fill(smoothedAmplitude * 255, 255, 255); 
+                translate(0, 0, cubeSize / 2 - sphereSize / 2); 
+                sphere(sphereSize); 
+            
             break;
             case 6://flower                                                                                                                                                                                                                                                   
                 
