@@ -32,7 +32,7 @@ public class Project extends PApplet
     float minSize = 50; // Minimum size for the cube and sphere
     float maxSize = 400; // Maximum size for the cube and sphere
 
-  
+
     float[] lerpedBuffer;
     float y = 0;
     float smoothedY = 0;
@@ -201,7 +201,7 @@ public class Project extends PApplet
         
                 background(0);
                 lights(); 
-                float sphereSize = smoothedAmplitude * 200; 
+                float sphereSize = normalizedAmplitude * 200; 
                 float cubeSize = sphereSize * 2; 
         
          
@@ -213,11 +213,38 @@ public class Project extends PApplet
         
                 // Draw the sphere inside the cube
                 noStroke();
-                fill(smoothedAmplitude * 255, 255, 255); 
+                fill(normalizedAmplitude * 255, 255, 255); 
                 translate(0, 0, cubeSize / 2 - sphereSize / 2); 
                 sphere(sphereSize);
 
             break;
+            case 6:
+                float SphereSize = 200; // Increased size of the spheres
+                background(0);
+                translate(width / 2, height / 2, -1000);
+                rotateX(frameCount * 0.01f);
+                rotateY(frameCount * 0.01f);
+    
+                float distance = 400;
+                for (int i = 0; i < 8; i++)// for each sphere ; 8
+                {
+                    noStroke();
+
+                    drawSphere(cos(radians(i * 45)) * distance, sin(radians(i * 45)) * distance, 0,SphereSize);
+                }
+    
+                noStroke();
+                fill(random(255), random(255), random(255));
+                drawSphere(0, 0, 0, SphereSize);
+    
+                float s = map(sin(frameCount * 0.01f), -1, 1, SphereSize, SphereSize + 50);
+                drawSphere(0, 0, 0, s);
+    
+                noFill();
+                stroke(0);
+                strokeWeight(4);
+                drawSphere(0, 0, 0, SphereSize);
+                break;
         }
     }
         
@@ -265,4 +292,11 @@ public class Project extends PApplet
         sphere(sphereSize); 
     }
 
+    private void drawSphere(float x, float y, float z, float r) {
+        pushMatrix();
+        translate(x, y, z);
+        sphereDetail(40);
+        sphere(r);
+        popMatrix();
+    }
 }        
