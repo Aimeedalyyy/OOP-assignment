@@ -80,7 +80,7 @@ public class Project extends PApplet
         y = height / 2;
         smoothedY = y;
 
-        lerpedBuffer = new float[width];
+        lerpedBuffer = new float[SharedBuffer.size()];
     }
     float off = 0;
     
@@ -173,7 +173,7 @@ public class Project extends PApplet
                 //float spacing = OFF_MAX * 0.7f; // Adjust the spacing between smaller spheres
                 float radius = OFF_MAX * 0.3f; // Adjust the radius of the larger sphere
 
-                // Draw the larger sphere
+                // Draw the middle sphere
                 stroke(255);
                 noFill();
                 strokeWeight(1);
@@ -183,7 +183,7 @@ public class Project extends PApplet
                 for (int i = 0; i < numSpheres; i++) 
                 {
                 
-                fill(255, 0, 0);
+                fill(255, 255, 0);
                 float theta = random(TWO_PI);
                 float phi = acos(2 * random(1) - 1);
                 float thisx = radius * sin(phi) * cos(theta);
@@ -200,6 +200,8 @@ public class Project extends PApplet
             break;
             case 4://mandala 
             translate(width / 2, height / 2); 
+
+
         
             for (int i = 0; i < SharedBuffer.size(); i++) {
                 noFill();
@@ -249,22 +251,33 @@ public class Project extends PApplet
                 
 
             break;
-            case 6://flower
+            case 6://flower                                                                                                                                                                                                                                                   
+                
                 float SphereSize = 200; // Increased size of the spheres
+
+                amplitude = SharedBuffer.level();
+                rotationSpeed = map(amplitude, 0.0f, 1.0f, 0.01f, 0.1f);
                 background(0);
                 translate(width / 2, height / 2, -1000);
                 rotateX(frameCount * 0.01f);
                 rotateY(frameCount * 0.01f);
-
                 float distance = 400;
-                for (int i = 0; i < 8; i++) {
+
+                for (int i = 0; i < SharedBuffer.size(); i++) {
+                    lerpedBuffer[i] = lerp(lerpedBuffer[i], SharedBuffer.get(i), 0.1f);
+                }
+
+                for (int i = 0; i < 8; i++){
+
                     noStroke();
-                    fill(random(255), random(255), random(255));
+                    float hue = map(lerpedBuffer[i % lerpedBuffer.length], 0, 1, 0, 255);
+                    hue = hue + 100;
+                    fill(hue,  255 , 255);
                     drawSphere(cos(radians(i * 45)) * distance, sin(radians(i * 45)) * distance, 0, SphereSize);
                 }
 
                 noStroke();
-                fill(random(255), random(255), random(255));
+                fill(30 , 255 , 255);
                 drawSphere(0, 0, 0, SphereSize);
 
                 float s = map(sin(frameCount * 0.01f), -1, 1, SphereSize, SphereSize + 50);
@@ -274,12 +287,8 @@ public class Project extends PApplet
                 stroke(0);
                 strokeWeight(4);
                 drawSphere(0, 0, 0, SphereSize);
-                break;
-        }
-        
-            
-            
-            
+            break;
+        }    
     }
         
         
