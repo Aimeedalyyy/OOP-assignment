@@ -125,38 +125,35 @@ public class Project extends PApplet
             break;
             
             case 2://lines 
-                stroke(255);
-                int drawtime = 0;
-
-                for(int i = 0 ; i < drumBuffer.size() ; i ++)
-                {
-                if(millis() - drawtime >= 100){
-                float x = random(width);
-                float y = random(height);
-                float x2 = random(width);
-                float y2 = random(height);
-                line(x, y, x2, y2);
+            stroke(255);
+            float x = random(width);
+            float y = random(height);
+            float x2 = random(width);
+            float y2 = random(height);
+            line(x, y, x2, y2);
     
-                //adding colour to the lines
-                stroke(random(255), random(255), random(255));
-                line(x, y, x2, y2);
-
-                //adding thickness to the lines
-                strokeWeight(random(8));
-                line(x, y, x2, y2);
+            //adding colour to the lines
+            stroke(random(255), random(255), random(255));
+            line(x, y, x2, y2);
     
-                //adding transparency to the lines
-                //stroke(random(255), random(255), random(255), random(255));
-                //line(x, y, x2, y2);
-
-                //adding lerping to the lines
-                float lerp = map(mouseX, 0, width, 0, 1);
-                float lerpedX = lerp(x, x2, lerp);
-                float lerpedY = lerp(y, y2, lerp);
-                line(x, y, lerpedX, lerpedY);
-
-                drawtime = millis();
-                }
+            //adding thickness to the lines
+            strokeWeight(random(8));
+            line(x, y, x2, y2);
+    
+    
+            //adding transparency to the lines
+            stroke(random(255), random(255), random(255), random(255));
+            line(x, y, x2, y2);
+    
+            //adding lerping to the lines
+            float lerp = map(mouseX, 0, width, 0, 1);
+            float lerpedX = lerp(x, x2, lerp);
+            float lerpedY = lerp(y, y2, lerp);
+            line(x, y, lerpedX, lerpedY);
+    
+            //making the lines disappear after 5 seconds
+            if (mousePressed) {
+                background(0);
             }
 
 
@@ -202,8 +199,23 @@ public class Project extends PApplet
                 // Normalize the amplitude to fit within the range of 0 to 1
                 float normalizedAmplitude = map(SPamplitude, 0, 1, 0, 1);
         
-                // Draw the cube and sphere based on the normalized amplitude
-                drawCubeSphere(normalizedAmplitude);
+                background(0);
+                lights(); 
+                float sphereSize = smoothedAmplitude * 200; 
+                float cubeSize = sphereSize * 2; 
+        
+         
+                // Draw the cube
+                stroke(255); 
+                noFill();
+                translate(width / 2, height / 2, -cubeSize / 2); 
+                box(cubeSize); // Draw a cube
+        
+                // Draw the sphere inside the cube
+                noStroke();
+                fill(smoothedAmplitude * 255, 255, 255); 
+                translate(0, 0, cubeSize / 2 - sphereSize / 2); 
+                sphere(sphereSize);
 
             break;
         }
