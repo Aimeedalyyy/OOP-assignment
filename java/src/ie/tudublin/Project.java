@@ -18,7 +18,7 @@ public class Project extends PApplet
     int mode = 0;
 
     //Cube Variables
-    int OFF_MAX = 300;
+    //int OFF_MAX = 300;
 
     //case 3 variables
     float angle = 0;
@@ -44,6 +44,8 @@ public class Project extends PApplet
 		
 	}
 
+    
+
     public void settings()
     {
         size(1000, 1000, P3D);
@@ -51,6 +53,7 @@ public class Project extends PApplet
 
     public void setup()
     {
+        background(0);
         minim = new Minim(this);
 
         //audio files
@@ -84,81 +87,58 @@ public class Project extends PApplet
     }
     float off = 0;
     
-    int colorFromOffset(int offset) {
-            return (int) ((offset + OFF_MAX) / (2.8 * OFF_MAX) * 255);
-        }
-
-
+    
     public void draw()
     {
+        float amplitude = SharedBuffer.level();
+        float rotationSpeed = map(amplitude, 0.0f, 1.0f, 0.01f, 0.1f);
         colorMode(HSB);
-        background(0);
+        //background(0);
         stroke(255);
 
         switch (mode) {
-            case 1:
-                background(0);
+            case 2://mandala 
+            translate(width / 2, height / 2); 
 
-                float amplitude = SharedBuffer.level();
-                float rotationSpeed = map(amplitude, 0.0f, 1.0f, 0.01f, 0.1f);
+            for (int i = 0; i < SharedBuffer.size(); i++) {
+                noFill();
+                float fx = cos(angle) * 200;
+                float fy = sin(angle) * 200;
 
-                translate(width / 2, height / 2, -OFF_MAX);
-                rotateX(frameCount * rotationSpeed);
-                rotateY(frameCount * 0.01f);
-                rotateZ(frameCount * 0.01f);
-
-                for (int xo = -OFF_MAX; xo <= OFF_MAX; xo += 50) {
-                    for (int yo = -OFF_MAX; yo <= OFF_MAX; yo += 50) {
-                        for (int zo = -OFF_MAX; zo <= OFF_MAX; zo += 50) {
-                        pushMatrix();
-                        translate(xo, yo, zo);
-                        rotateX(frameCount * rotationSpeed);
-                        rotateY(frameCount * 0.01f);
-                        rotateZ(frameCount * 0.01f);
-                        fill(colorFromOffset(xo), colorFromOffset(yo), colorFromOffset(zo));
-                        box(20);
-                        popMatrix();
-                    }
-                    }
-                }
+                strokeWeight(10);
+                stroke(random(20),  255, 255);
+    
+                ellipse(fx, fy, 400, 400); 
+                rotate(radians(30)); 
+            }
+            
+            angle += 0.05; 
             break;
             
-            case 2://lines 
-            stroke(255);
-            float x = random(width);
-            float y = random(height);
-            float x2 = random(width);
-            float y2 = random(height);
-            line(x, y, x2, y2);
-    
-            //adding colour to the lines
-            stroke(random(255), random(255), random(255));
-            line(x, y, x2, y2);
-    
-            //adding thickness to the lines
-            strokeWeight(random(8));
-            line(x, y, x2, y2);
-    
-    
-            //adding transparency to the lines
-            stroke(random(255), random(255), random(255), random(255));
-            line(x, y, x2, y2);
-    
-            //adding lerping to the lines
-            float lerp = map(mouseX, 0, width, 0, 1);
-            float lerpedX = lerp(x, x2, lerp);
-            float lerpedY = lerp(y, y2, lerp);
-            line(x, y, lerpedX, lerpedY);
-    
-            //making the lines disappear after 5 seconds
-            if (mousePressed) {
-                background(0);
-            }
+            case 1://lines 
+                float x = random(width);
+                float y = random(height);
+                float x2 = random(width);
+                float y2 = random(height);
+                stroke(255);
+                int linenum = 0;
+
+                // adding colour to the lines
+                
+                strokeWeight(random(8));
+                fill(45, 255, 255);
+                line(x, y, x2, y2);
+                    
+                
+                
+                if (mousePressed) {
+                    background(0);
+                }
 
 
             break;
             case 3://DiscoBall
-
+                background(0);
                 amplitude = SharedBuffer.level();
                 rotationSpeed = map(amplitude, 0.0f, 1.0f, 0.01f, 0.1f);
         
@@ -198,26 +178,45 @@ public class Project extends PApplet
             
 
             break;
-            case 4://mandala 
-            translate(width / 2, height / 2); 
+            case 4:
+            //rotating cube
+            background(0);
+            OFF_MAX = 300;
+            amplitude = SharedBuffer.level();
+            rotationSpeed = map(amplitude, 0.0f, 1.0f, 0.01f, 0.1f);
+            float hue;
+
+            translate(width / 2, height / 2, -OFF_MAX);
+            rotateX(frameCount * 0.01f);
+            rotateY(frameCount * 0.01f);
+            rotateZ(frameCount * 0.01f);
 
 
-        
-            for (int i = 0; i < SharedBuffer.size(); i++) {
-                noFill();
-                float fx = cos(angle) * 200;
-                float fy = sin(angle) * 200;
 
-                strokeWeight(10);
-                stroke(random(255), random(255), random(255));
-    
-                ellipse(fx, fy, 400, 400); 
-                rotate(radians(30)); 
+            for (int xo = -OFF_MAX; xo <= OFF_MAX; xo += 50) {
+                for (int yo = -OFF_MAX; yo <= OFF_MAX; yo += 50) {
+                    for (int zo = -OFF_MAX; zo <= OFF_MAX; zo += 50) {
+                    
+                    
+                    pushMatrix();
+                    translate(xo, yo, zo);
+                    rotateX(frameCount * rotationSpeed);
+                    rotateY(frameCount * 0.01f);
+                    rotateZ(frameCount * 0.01f);
+                    fill(amplitude + 100,  255 , 255);
+                    stroke(0);
+                    box(20);
+                    popMatrix();
+                }
+                }
             }
-            
-            angle += 0.05; 
-        
             break;
+            
+            
+            
+            
+            
+        
             case 5://sphere in cube 
                 float SPamplitude = SharedBuffer.level();
 
@@ -237,7 +236,7 @@ public class Project extends PApplet
         
                 // Draw the sphere inside the cube
                 noStroke();
-                fill(smoothedAmplitude * 255, 255, 255); 
+                fill(SPamplitude * 255, 255, 255); 
                 translate(0, 0, cubeSize / 2 - sphereSize / 2); 
                 sphere(sphereSize); 
             
@@ -261,7 +260,7 @@ public class Project extends PApplet
                 for (int i = 0; i < 8; i++){
 
                     noStroke();
-                    float hue = map(lerpedBuffer[i % lerpedBuffer.length], 0, 1, 0, 255);
+                    hue = map(lerpedBuffer[i % lerpedBuffer.length], 0, 1, 0, 255);
                     hue = hue + 100;
                     fill(hue,  255 , 255);
                     drawSphere(cos(radians(i * 45)) * distance, sin(radians(i * 45)) * distance, 0, SphereSize);
