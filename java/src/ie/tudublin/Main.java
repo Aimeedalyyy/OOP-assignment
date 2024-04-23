@@ -9,7 +9,7 @@ public class Main
 	public void helloProcessing()
 	{
 		String[] a = {"MAIN"};
-        processing.core.PApplet.runSketch( a, new SpheresInSphere());
+        processing.core.PApplet.runSketch( a, new DiscoBall());
     }
 
 	
