@@ -95,9 +95,34 @@ public class Project extends PApplet
         colorMode(HSB);
         //background(0);
         stroke(255);
+        float SPamplitude = SharedBuffer.level();
+
+        if (mousePressed) 
+        {
+            background(0);
+        }
 
         switch (mode) {
-            case 2://mandala 
+            case 1:
+            //lines 
+            background(0);    
+            float x = random(width);
+            float y = random(height);
+            float x2 = random(width);
+            float y2 = random(height);
+            stroke(255);
+
+
+            // adding colour to the lines
+            strokeWeight(random(8));
+            stroke(SPamplitude + random(255), 255, 255);
+            line(x, y, x2, y2);
+            
+            break;
+            
+            case 2:
+            ///mandala 
+            background(0);
             translate(width / 2, height / 2); 
 
             for (int i = 0; i < SharedBuffer.size(); i++) {
@@ -112,30 +137,8 @@ public class Project extends PApplet
                 rotate(radians(30)); 
             }
             
-            angle += 0.05; 
-            break;
-            
-            case 1://lines 
-                float x = random(width);
-                float y = random(height);
-                float x2 = random(width);
-                float y2 = random(height);
-                stroke(255);
-                int linenum = 0;
-
-                // adding colour to the lines
+            //angle += 0.05; 
                 
-                strokeWeight(random(8));
-                fill(45, 255, 255);
-                line(x, y, x2, y2);
-                    
-                
-                
-                if (mousePressed) {
-                    background(0);
-                }
-
-
             break;
             case 3://DiscoBall
                 background(0);
@@ -178,8 +181,8 @@ public class Project extends PApplet
             
 
             break;
-            case 4:
-            //rotating cube
+            case 4://rotating cube
+            
             background(0);
             OFF_MAX = 300;
             amplitude = SharedBuffer.level();
@@ -218,7 +221,7 @@ public class Project extends PApplet
             
         
             case 5://sphere in cube 
-                float SPamplitude = SharedBuffer.level();
+                SPamplitude = SharedBuffer.level();
 
                 // Normalize the amplitude to fit within the range of 0 to 1
                 float normalizedAmplitude = map(SPamplitude, 0, 1, 0, 1);
@@ -236,7 +239,7 @@ public class Project extends PApplet
         
                 // Draw the sphere inside the cube
                 noStroke();
-                fill(SPamplitude * 255, 255, 255); 
+                fill(SPamplitude * 150, 255, 255); 
                 translate(0, 0, cubeSize / 2 - sphereSize / 2); 
                 sphere(sphereSize); 
             
