@@ -41,6 +41,7 @@ public class Audio12 extends PApplet
 
     public void setup()
     {
+        colorMode(RGB);
         minim = new Minim(this);
         // Uncomment this to use the microphone
         // ai = minim.getLineIn(Minim.MONO, width, 44100, 16);

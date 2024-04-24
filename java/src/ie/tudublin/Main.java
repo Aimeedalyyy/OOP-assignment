@@ -1,6 +1,5 @@
-
-// Packages must match the folder structure
 package ie.tudublin;
+
 
 public class Main
 {
@@ -8,7 +7,7 @@ public class Main
 	public void helloProcessing()
 	{
 		String[] a = {"MAIN"};
-        processing.core.PApplet.runSketch( a, new ellips());
+        processing.core.PApplet.runSketch( a, new Project());
     }
 
 	
