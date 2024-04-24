@@ -44,8 +44,6 @@ public class Project extends PApplet
 		
 	}
 
-    
-
     public void settings()
     {
         size(1000, 1000, P3D);
@@ -55,6 +53,7 @@ public class Project extends PApplet
     {
         background(0);
         minim = new Minim(this);
+        colorMode(HSB);
 
         //audio files
         banjo = minim.loadFile("/Users/aimeedaly/Desktop/OOP-assignment/java/data/Banjo.wav" , 1024); //1024 is the size of the buffer we are using 
@@ -64,9 +63,6 @@ public class Project extends PApplet
         whistle = minim.loadFile("/Users/aimeedaly/Desktop/OOP-assignment/java/data/whistle.mp3" , 1024);
         
         //play all files at the same time
-
-        mixedInput = minim.getLineIn();
-        
         drums.play();
         boathorn.play();
         banjo.play();
@@ -76,17 +72,13 @@ public class Project extends PApplet
 
         //shared audio buffers
         SharedBuffer = banjo.mix;
-        drumBuffer = drums.mix;
 
-        colorMode(HSB);
-
-        y = height / 2;
-        smoothedY = y;
-
-        lerpedBuffer = new float[SharedBuffer.size()];
+        lerpedBuffer = new float[SharedBuffer.size()]; // Initialize with the size of SharedBuffer
+        for (int i = 0; i < lerpedBuffer.length; i++) {
+            lerpedBuffer[i] = 0; // Initialize each element to 0
+        }
     }
-    float off = 0;
-    
+   
     
     public void draw()
     {
@@ -214,12 +206,6 @@ public class Project extends PApplet
                 }
             }
             break;
-            
-            
-            
-            
-            
-        
             case 5://sphere in cube 
                 SPamplitude = SharedBuffer.level();
 
@@ -263,8 +249,7 @@ public class Project extends PApplet
                 for (int i = 0; i < 8; i++){
 
                     noStroke();
-                    hue = map(lerpedBuffer[i % lerpedBuffer.length], 0, 1, 0, 255);
-                    hue = hue + 100;
+                    hue = map(lerpedBuffer[i % lerpedBuffer.length], 0, 1, 100, 150);
                     fill(hue,  255 , 255);
                     drawSphere(cos(radians(i * 45)) * distance, sin(radians(i * 45)) * distance, 0, SphereSize);
                 }
@@ -284,10 +269,6 @@ public class Project extends PApplet
         }    
     }
         
-        
-   
-
-
     private void drawSphere(float x, float y, float z, float r) {
         pushMatrix();
         translate(x, y, z);
