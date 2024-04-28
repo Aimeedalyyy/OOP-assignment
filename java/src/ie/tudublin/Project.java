@@ -44,10 +44,10 @@ public class Project extends PApplet
 		
 	}
 
-    public void settings()
-    {
-        size(1000, 1000, P3D);
+    public void settings() {
+        fullScreen(P3D);
     }
+    
 
     public void setup()
     {
